@@ -8,19 +8,22 @@ MONTHS = {"january": "01", "february": "02", "march": "03", "april": "04", "may"
 
 
 class PyCarbon:
-    def __init__(self, date: str = None):
+    def __init__(self, date= None):
         self.datetime_today = None
         if date:
-            self.datetime_today = datetime.datetime.today()
-            remove_space_in_date = date.replace(" ", "")
-            if 'firstdayof' in remove_space_in_date.replace(" ", "").lower():
-                year = "".join(filter(str.isdigit, remove_space_in_date))
-                month_search = re.sub(r"\d+", "", remove_space_in_date.replace('firstdayof', '').lower())
-                if month_search in MONTHS.keys():
-                    self.datetime_today = self.datetime_today.replace(day=1, month=int(MONTHS[month_search]))
-                if year:
-                    self.datetime_today = self.datetime_today.replace(day=1, year=int(year),
-                                                                      month=int(MONTHS[month_search]))
+            if type(date) == str:
+                self.datetime_today = datetime.datetime.today()
+                remove_space_in_date = date.replace(" ", "")
+                if 'firstdayof' in remove_space_in_date.replace(" ", "").lower():
+                    year = "".join(filter(str.isdigit, remove_space_in_date))
+                    month_search = re.sub(r"\d+", "", remove_space_in_date.replace('firstdayof', '').lower())
+                    if month_search in MONTHS.keys():
+                        self.datetime_today = self.datetime_today.replace(day=1, month=int(MONTHS[month_search]))
+                    if year:
+                        self.datetime_today = self.datetime_today.replace(day=1, year=int(year),
+                                                                          month=int(MONTHS[month_search]))
+            elif type(date) == datetime.datetime:
+                self.datetime_today = date
 
     def __str__(self):
         return self._date_representation
